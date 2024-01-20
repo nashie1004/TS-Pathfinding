@@ -1,4 +1,5 @@
 import { IGraph } from "./util.state";
+import Node from "./element.node";
 
 export default class AStar{
     graph: IGraph;
@@ -10,7 +11,8 @@ export default class AStar{
         this.graph = graph
     }
 
-    run(){
-        alert("todo ")
+    run(srcNode: Node, goalNode: Node){
+        // alert("todo ")
+        console.log(this.graph, srcNode, goalNode)
     }
 }

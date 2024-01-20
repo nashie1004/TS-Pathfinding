@@ -1,4 +1,5 @@
 import { IGraph } from "./util.state";
+import Node from "./element.node";
 
 export default class BFS{
     graph: IGraph
@@ -10,7 +11,7 @@ export default class BFS{
         this.graph = graph;
     }
 
-    run(){
+    run(startNode: Node, endNode: Node){
         alert("todo ")
     }
 }

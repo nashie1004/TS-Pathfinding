@@ -10,13 +10,9 @@ interface INeighbors {
 export default class Node {
     nodeId: [number, number];
     _nodeIdString: string
-    evaluated: boolean;
     xCoordinate: number;
     yCoordinate: number;
-    nodeState: 
-    NodeState.nodeStateEmpty | NodeState.nodeStateEnd | 
-    NodeState.nodeStateStart | NodeState.nodeStateEvaluated | 
-    NodeState.nodeStateWall
+    nodeState: NodeState
     neighbors: INeighbors 
     xLimit: number
     yLimit: number
@@ -25,7 +21,6 @@ export default class Node {
     constructor(nodeId: [number, number] = [0, 0], ylimit: number, xlimit: number) {
         this.nodeId = nodeId; // results to undefined on map.get(nodeId) --pass by reference
         this._nodeIdString = JSON.stringify(this.nodeId);
-        this.evaluated = false;
         this.xCoordinate = nodeId[0] // row/col are swap?
         this.yCoordinate = nodeId[1]
         this.nodeState = NodeState.nodeStateEmpty
@@ -56,28 +51,42 @@ export default class Node {
 
     setNodeAsStartNode(){
         
+        const node: HTMLElement | null = document.querySelector(`[data-nodeId="${this.nodeId}"]`)
+        if (!node) return;
+        node.classList.add("bg-success");
+        this.nodeState = NodeState.nodeStateStart
     }
 
     setNodeAsEndNode(){
         //
+        const node: HTMLElement | null = document.querySelector(`[data-nodeId="${this.nodeId}"]`)
+        if (!node) return;
+        node.classList.add("bg-danger");
+        this.nodeState = NodeState.nodeStateEnd
     }
 
     setNodeAsBarrier(){
         //bg-dark
         const node: HTMLElement | null = document.querySelector(`[data-nodeId="${this.nodeId}"]`)
-        node!.classList.add("bg-dark");
+        if (!node) return;
+        node.classList.add("bg-dark");
+        this.nodeState = NodeState.nodeStateWall
     }
 
     setNodeAsEvaluated(){
         //.bg-primary-subtle
         const node: HTMLElement | null = document.querySelector(`[data-nodeId="${this.nodeId}"]`)
-        node!.classList.add("bg-primary-subtle");
+        if (!node) return;
+        node.classList.add("bg-primary-subtle");
+        this.nodeState = NodeState.nodeStateEvaluated;
     }
 
     setNodeAsPath(){
         //.bg-warning
         const node: HTMLElement | null = document.querySelector(`[data-nodeId="${this.nodeId}"]`)
-        node!.classList.add("bg-warning");
+        if (!node) return;
+        node.classList.add("bg-warning");
+        this.nodeState = NodeState.nodeStatePath;
     }
 
     render(): string{ 

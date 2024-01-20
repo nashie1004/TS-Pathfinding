@@ -1,4 +1,5 @@
 import { IGraph } from "./util.state";
+import Node from "./element.node";
 
 export default class Djikstra{
     graph: IGraph;
@@ -9,8 +10,8 @@ export default class Djikstra{
     constructor(graph: IGraph) {
         this.graph = graph;
     }
+    run(startNode: Node, endNode: Node){
 
-    run(){
         alert("todo ")
         //
     }

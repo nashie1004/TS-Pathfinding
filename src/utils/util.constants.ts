@@ -35,4 +35,5 @@ export enum NodeState{
     ,nodeStateStart = "start"
     ,nodeStateEnd = "end"
     ,nodeStateEmpty = "empty"
+    ,nodeStatePath = "path"
 }

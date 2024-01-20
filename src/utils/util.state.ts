@@ -3,7 +3,7 @@ import BFS from "./algo.bfs";
 import DFS from "./algo.dfs";
 import Djikstra from "./algo.djikstra";
 import Node from "./element.node";
-import { AlgoNames, HTMLIds } from "./util.constants";
+import { AlgoNames, HTMLIds, NodeState } from "./util.constants";
 
 declare var bootstrap: any;
 
@@ -21,13 +21,23 @@ interface IExecAlgo{
     djikstra: Djikstra;
 }
 
+interface IGrid{
+    row: number;
+    column: number;
+    nodeSize: number
+    graph: IGraph;
+    algos: IExecAlgo
+    startNodeHasBeenSet: Node | null;
+    endNodeHasBeenSet: Node | null;
+}
+
 export default class State{
     toasterBtnToggles: IToaster[];
-    row: number // row = y, 
-    column: number //column = x
-    nodeSize: number
-    gridGraph: IGraph;
-    algos: IExecAlgo;
+    
+    // row = y, column = x
+    grid: IGrid;
+    
+    recentEventBtnTriggered: "" | HTMLIds.navStartNode | HTMLIds.navEndNode | HTMLIds.navWallNode;
 
     constructor() {
         this.toasterBtnToggles = [
@@ -37,15 +47,39 @@ export default class State{
             {message: "End Node Picked!", elementId: HTMLIds.navEndNode },
             {message: "Wall Node Picked!", elementId: HTMLIds.navWallNode },
         ];
-        this.column = 45;
-        this.row = 18;
-        this.nodeSize = 30; //px
-        this.gridGraph = new Map();
-        this.algos = {
-            aStar: new AStar(this.gridGraph),
-            djikstra: new Djikstra(this.gridGraph),
-            bfs: new BFS(this.gridGraph),
-            dfs: new DFS(this.gridGraph)
+        const tempMap = new Map();
+        this.grid = {
+            column: 45,
+            row: 45,
+            nodeSize: 30,
+            graph: tempMap,
+            algos: {
+                aStar: new AStar(tempMap),
+                djikstra: new Djikstra(tempMap),
+                bfs: new BFS(tempMap),
+                dfs: new DFS(tempMap)
+            },
+            startNodeHasBeenSet: null,
+            endNodeHasBeenSet: null
+        }
+        this.recentEventBtnTriggered = ""
+    }
+
+    setNewGrid(){ // has clean state
+        const tempMap = new Map();
+        this.grid = {
+            column: 45,
+            row: 45,
+            nodeSize: 30,
+            graph: tempMap,
+            algos: {
+                aStar: new AStar(tempMap),
+                djikstra: new Djikstra(tempMap),
+                bfs: new BFS(tempMap),
+                dfs: new DFS(tempMap)
+            },
+            startNodeHasBeenSet: null,
+            endNodeHasBeenSet: null
         }
     }
 
@@ -54,35 +88,28 @@ export default class State{
         return select;
     }
 
-    setExecuteAlgo(){
+    setExecuteAlgo(startNode: Node, endNode: Node){
         const select = this.getAlgoSelected();
         
-        if (select){
-            console.log(select, select.value)
-            
-            switch(select.value){
-                case AlgoNames.algorithmAStar:
-                    this.algos.aStar.run();
-
-                    break;
-                case AlgoNames.algorithmBFS:
-                    this.algos.bfs.run();
-
-                    break;
-                case AlgoNames.algorithmDFS:
-                    this.algos.dfs.run();
-
-                    break;
-                case AlgoNames.algorithmDijkstra:
-                    this.algos.djikstra.run();
-
-                    break;
-            }
+        switch(select.value){
+            case AlgoNames.algorithmAStar:
+                this.grid.algos.aStar.run(startNode, endNode);
+                break;
+            case AlgoNames.algorithmBFS:
+                this.grid.algos.bfs.run(startNode, endNode);
+                break;
+            case AlgoNames.algorithmDFS:
+                this.grid.algos.dfs.run(startNode, endNode);
+                break;
+            case AlgoNames.algorithmDijkstra:
+                this.grid.algos.djikstra.run(startNode, endNode);
+                break;
         }
     }
 
     setReset(){
-
+        this.setNewGrid();
+        this.setRenderNodes();
     }
 
     setToasterClickEvents(){
@@ -91,24 +118,34 @@ export default class State{
 
         for(let btn of this.toasterBtnToggles){
             document.getElementById(btn.elementId)!.addEventListener("click", () => {
-                toastBootstrap.show()
-                document.getElementById(HTMLIds.toasterBodyText)!.textContent = btn.message
-
-                // TODO
+                    console.log(btn)
                 switch(btn.elementId){
                     case HTMLIds.navReset:
                         this.setReset();
                         break;
                     case HTMLIds.navVisualize:
-                        this.setExecuteAlgo();
+                        // check if start and end node has been set
+                        if (!this.grid.startNodeHasBeenSet || !this.grid.endNodeHasBeenSet) {
+                            toastBootstrap.show()
+                            document.getElementById(HTMLIds.toasterBodyText)!.textContent = "Set a starting or end point first!"
+                            return;
+                        }
+                        this.setExecuteAlgo(this.grid.startNodeHasBeenSet, this.grid.endNodeHasBeenSet);
                         break;
+                    // these 3 below are for this.setListenGridContainerClickEvent() 
                     case HTMLIds.navStartNode:
+                        this.recentEventBtnTriggered = HTMLIds.navStartNode
                         break;
                     case HTMLIds.navEndNode:
+                        this.recentEventBtnTriggered = HTMLIds.navEndNode
                         break;
                     case HTMLIds.navWallNode:
+                        this.recentEventBtnTriggered = HTMLIds.navWallNode
                         break;
                 }
+
+                toastBootstrap.show()
+                document.getElementById(HTMLIds.toasterBodyText)!.textContent = btn.message
 
             })
         }
@@ -118,35 +155,56 @@ export default class State{
         document.getElementById(HTMLIds.maze)!.addEventListener("click", (e: MouseEvent) => {
             const cell: HTMLElement | null = e.target as HTMLElement
             
-            if (cell?.dataset?.nodeid){
-                const nodeId = cell.dataset.nodeid.split(",").map(Number) as [number, number];
-                const _nodeIdString = JSON.stringify(nodeId);
+            if (!(cell?.dataset?.nodeid)) return
 
-                const foundNode: Node | undefined = this.gridGraph.get(_nodeIdString);
+            // get id
+            const nodeId = cell.dataset.nodeid.split(",").map(Number) as [number, number];
+            const _nodeIdString = JSON.stringify(nodeId);
+            // get node
+            const foundNode: Node | undefined = this.grid.graph.get(_nodeIdString);
 
-                foundNode?.setNodeAsPath()
+            // check if node exists, and only set empty nodes if state is empty 
+            if (!foundNode || foundNode.nodeState !== NodeState.nodeStateEmpty) return;
 
-                console.log(foundNode)
+            // check the recent event/btn clicked
+            switch(this.recentEventBtnTriggered){
+                case HTMLIds.navStartNode:
+                    // sets start node only once
+                    if (this.grid.startNodeHasBeenSet) return;
+                    foundNode.setNodeAsStartNode()
+                    this.grid.startNodeHasBeenSet = foundNode;
+                    break;
+                case HTMLIds.navEndNode:
+                    // sets end node only once
+                    if (this.grid.endNodeHasBeenSet) return;
+                    foundNode.setNodeAsEndNode()
+                    this.grid.endNodeHasBeenSet = foundNode;
+                    break;
+                case HTMLIds.navWallNode:
+                    foundNode.setNodeAsBarrier()
+                    break;
             }
+
+            console.log(this.recentEventBtnTriggered, foundNode)
         })
     }
 
     setGridDimension(){
-        document.getElementById(HTMLIds.mazeEntry)!.style.gridTemplateColumns = `repeat(${this.column}, ${this.nodeSize}px)`
-        document.getElementById(HTMLIds.mazeEntry)!.style.gridTemplateRows = `repeat(${this.row},${this.nodeSize}px)`
+        document.getElementById(HTMLIds.mazeEntry)!.style.gridTemplateColumns = `repeat(${this.grid.column}, ${this.grid.nodeSize}px)`
+        document.getElementById(HTMLIds.mazeEntry)!.style.gridTemplateRows = `repeat(${this.grid.column},${this.grid.nodeSize}px)`
     }
 
-    setInitialNodes(){
+    setRenderNodes(){
         this.setGridDimension();
 
         let htmlNodes = "";
 
-        for(let y = 0; y < this.row; y++){
-            for(let x = 0; x < this.column; x++){
+        for(let y = 0; y < this.grid.row; y++){
+            for(let x = 0; x < this.grid.column; x++){
                 const idx: [number, number] = [x, y]; // Inverse = [0: x/horizontal, 1: y/vertical]
-                const htmlNode = new Node(idx, this.row, this.column);
+                const htmlNode = new Node(idx, this.grid.row, this.grid.column);
 
-                this.gridGraph.set(htmlNode._nodeIdString, htmlNode)
+                this.grid.graph.set(htmlNode._nodeIdString, htmlNode)
 
                 htmlNodes += htmlNode.render();
             }
@@ -154,14 +212,11 @@ export default class State{
         
         const mazeEntry: HTMLElement | null = document.getElementById(HTMLIds.mazeEntry);
         mazeEntry!.innerHTML = htmlNodes
-
-        console.log(this.gridGraph)
-
-        this.setListenGridContainerClickEvent();
     }
 
     init(){
         this.setToasterClickEvents();
-        this.setInitialNodes()
+        this.setListenGridContainerClickEvent();
+        this.setRenderNodes()
     }
 }

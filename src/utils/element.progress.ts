@@ -25,7 +25,7 @@ export default class Progress{
     render(){
         const progressContent = `
         <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 5px">
-          <div class="progress-bar" style="width: 0%"></div>
+          <div class="progress-bar bg-info" style="width: 0%"></div>
         </div>`
 
         const progress: HTMLElement | null = document.getElementById(this.progressId);

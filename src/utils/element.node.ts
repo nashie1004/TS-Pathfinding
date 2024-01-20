@@ -24,6 +24,6 @@ export default class Node {
     }
 
     render(): string{
-        return `<div class="col border" data-nodeIndex='${this.nodeIndex}'>&nbsp;</div>`
+        return `<div class="col border " data-nodeIndex='${this.nodeIndex}'>&nbsp;</div>`
     }
 }

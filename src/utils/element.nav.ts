@@ -1,41 +1,43 @@
 export default class Nav{
     navId: string;
+    algorithms: string[];
 
     constructor() {
-        this.navId = "nav";        
+        this.navId = "nav";
+        this.algorithms = ["DFS", "BFS", "A Star", "Dijkstra"]        
+    }
+
+    showDropdownAlgorithms(): string{
+        let dropdownOptions = "";
+
+        for(let item of this.algorithms){
+            const li = `<li><a class="dropdown-item">${item}</a></li>`
+            dropdownOptions += li;
+        }
+
+        return dropdownOptions;
     }
 
     render(){
         const navContent = `<div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+
+            <a class="navbar-brand" href="#">Path Finding Algorithm Visualizer</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Reset</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown link
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-                </li>
-            </ul>
+
+            <select style="max-width: 200px;" class="form-select me-auto" aria-label="Algorithm Options">
+                <option selected>Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            
+            <div class="">
+                <button type="button" class="btn btn-danger me-1 text-liht">Reset Grid</button>
+                <button type="button" class="btn btn-light">Visualize Algorithm</button>
+            </div>
+
             </div>
         </div>`
 

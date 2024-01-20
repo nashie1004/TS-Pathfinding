@@ -4,12 +4,12 @@ export default class Maze{
     mazeId: string;
     mazeSize: number;
 
-    constructor(mazeSize: number = 30) {
+    constructor(mazeSize: number = 777) {
         this.mazeId = "maze";
         this.mazeSize = mazeSize;
     }
 
-    createNode(): string{
+    createNodes(): string{
         let htmlNodes = "";
 
         for(let i = 0; i < this.mazeSize; i++){
@@ -22,14 +22,15 @@ export default class Maze{
     }
 
     render(){
-        const MazeContent = `<div class="container text-center">
+        //overflow-x-scroll
+        const MazeContent = `<div class="container text-center ">
             <div class="row row-cols-auto">
-                ${this.createNode()}
+                ${this.createNodes()}
             </div>
         </div>`;
 
         const Maze: HTMLElement | null = document.getElementById(this.mazeId);
-        Maze?.classList.add("container-fluid", "mt-2")
+        Maze?.classList.add("container-fluid", "mt-2", "mb-2")
         Maze!.innerHTML = MazeContent
     }
 }

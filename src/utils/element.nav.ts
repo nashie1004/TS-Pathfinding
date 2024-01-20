@@ -1,4 +1,4 @@
-import { HTMLIds } from "./util.constants";
+import { AlgoNames, HTMLIds } from "./util.constants";
 
 interface IAlgorithmsOptions{
     value: string,
@@ -10,10 +10,10 @@ export default class Nav{
 
     constructor() {
         this.algorithms = [
-            { name: HTMLIds.algorithmDFS, value: HTMLIds.algorithmDFS },
-            { name: HTMLIds.algorithmBFS, value: HTMLIds.algorithmBFS },
-            { name: HTMLIds.algorithmAStar, value: HTMLIds.algorithmAStar },
-            { name: HTMLIds.algorithmDijkstra, value: HTMLIds.algorithmDijkstra },
+            { name: AlgoNames.algorithmDFS, value: AlgoNames.algorithmDFS },
+            { name: AlgoNames.algorithmBFS, value: AlgoNames.algorithmBFS },
+            { name: AlgoNames.algorithmAStar, value: AlgoNames.algorithmAStar },
+            { name: AlgoNames.algorithmDijkstra, value: AlgoNames.algorithmDijkstra },
         ]        
         
     }

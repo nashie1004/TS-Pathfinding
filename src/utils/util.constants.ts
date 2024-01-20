@@ -20,13 +20,17 @@ export enum HTMLIds{
 
     ,maze = "maze"
     ,mazeEntry = "mazeEntry"
+}
 
-    ,algorithmDFS = "Depth-First Search"
+export enum AlgoNames{
+    algorithmDFS = "Depth-First Search"
     ,algorithmBFS = "Breadth-First Search"
     ,algorithmAStar = "A-Star"
     ,algorithmDijkstra = "Dijkstra"
+}
 
-    ,nodeStateEvaluated = "evaluated"
+export enum NodeState{
+    nodeStateEvaluated = "evaluated"
     ,nodeStateWall = "wall"
     ,nodeStateStart = "start"
     ,nodeStateEnd = "end"

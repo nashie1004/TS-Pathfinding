@@ -1,4 +1,11 @@
-import { HTMLIds } from "./util.constants";
+import {  NodeState } from "./util.constants";
+
+interface INeighbors {
+    top: [number, number] | null;
+    botttom: [number, number] | null;
+    left: [number, number] | null;
+    right: [number, number] | null;
+}
 
 export default class Node {
     nodeId: [number, number];
@@ -6,21 +13,44 @@ export default class Node {
     xCoordinate: number;
     yCoordinate: number;
     nodeState: 
-    HTMLIds.nodeStateEmpty | HTMLIds.nodeStateEnd | 
-    HTMLIds.nodeStateStart | HTMLIds.nodeStateEvaluated | 
-    HTMLIds.nodeStateWall
-    // neighbors: 
+    NodeState.nodeStateEmpty | NodeState.nodeStateEnd | 
+    NodeState.nodeStateStart | NodeState.nodeStateEvaluated | 
+    NodeState.nodeStateWall
+    neighbors: INeighbors 
+    xLimit: number
+    yLimit: number
 
-    constructor(nodeId: [number, number] = [0, 0]) {
+    // [0: x/horizontal, 1: y/vertical]
+    constructor(nodeId: [number, number] = [0, 0], ylimit: number, xlimit: number) {
         this.nodeId = nodeId;
         this.evaluated = false;
-        this.xCoordinate = nodeId[0]
+        this.xCoordinate = nodeId[0] // row/col are swap?
         this.yCoordinate = nodeId[1]
-        this.nodeState = HTMLIds.nodeStateEmpty
+        this.nodeState = NodeState.nodeStateEmpty
+        this.neighbors = {
+            top: null, botttom: null, 
+            left: null, right: null
+        }
+        this.xLimit = xlimit
+        this.yLimit = ylimit
+
+        this.getNeighborNodes();
     }
 
     getNeighborNodes(){
-        //
+        if (this.yLimit <= this.yCoordinate){
+            this.neighbors.botttom = [this.xCoordinate, this.yCoordinate + 1]
+        }
+        if (this.yCoordinate > 0){
+            this.neighbors.top = [this.xCoordinate, this.yCoordinate - 1]
+        }
+        if (this.xLimit <= this.xCoordinate){
+            this.neighbors.right = [this.xCoordinate + 1, this.yCoordinate ]
+        }
+        if (this.xCoordinate > 0){
+            this.neighbors.left = [this.xCoordinate - 1, this.yCoordinate]
+        }
+        console.log(this)
     }
 
     setNodeAsStartNode(){

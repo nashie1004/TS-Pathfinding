@@ -3,7 +3,7 @@ import BFS from "./algo.bfs";
 import DFS from "./algo.dfs";
 import Djikstra from "./algo.djikstra";
 import Node from "./element.node";
-import { HTMLIds } from "./util.constants";
+import { AlgoNames, HTMLIds } from "./util.constants";
 
 declare var bootstrap: any;
 
@@ -63,19 +63,19 @@ export default class State{
             console.log(select, select.value)
             
             switch(select.value){
-                case HTMLIds.algorithmAStar:
+                case AlgoNames.algorithmAStar:
                     this.algos.aStar.run();
 
                     break;
-                case HTMLIds.algorithmBFS:
+                case AlgoNames.algorithmBFS:
                     this.algos.bfs.run();
 
                     break;
-                case HTMLIds.algorithmDFS:
+                case AlgoNames.algorithmDFS:
                     this.algos.dfs.run();
 
                     break;
-                case HTMLIds.algorithmDijkstra:
+                case AlgoNames.algorithmDijkstra:
                     this.algos.djikstra.run();
 
                     break;
@@ -130,12 +130,11 @@ export default class State{
 
         let htmlNodes = "";
 
-        for(let rowI = 0; rowI < this.row; rowI++){
-            for(let colJ = 0; colJ < this.column; colJ++){
-                const idx: [number, number] = [rowI, colJ];
-                const htmlNode = new Node(idx);
+        for(let row = 0; row < this.row; row++){
+            for(let col = 0; col < this.column; col++){
+                const idx: [number, number] = [col, row]; // Inverse = [0: x/horizontal, 1: y/vertical]
+                const htmlNode = new Node(idx, this.row, this.column);
 
-                htmlNode.getNeighborNodes();
                 this.gridGraph.set(idx, htmlNode)
 
                 htmlNodes += htmlNode.render();

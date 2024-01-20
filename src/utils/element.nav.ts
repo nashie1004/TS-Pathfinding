@@ -10,8 +10,8 @@ export default class Nav{
 
     constructor() {
         this.algorithms = [
-            { name: AlgoNames.algorithmDFS, value: AlgoNames.algorithmDFS },
             { name: AlgoNames.algorithmBFS, value: AlgoNames.algorithmBFS },
+            { name: AlgoNames.algorithmDFS, value: AlgoNames.algorithmDFS },
             { name: AlgoNames.algorithmAStar, value: AlgoNames.algorithmAStar },
             { name: AlgoNames.algorithmDijkstra, value: AlgoNames.algorithmDijkstra },
         ]        

@@ -1,10 +1,10 @@
 import {  NodeState } from "./util.constants";
 
-interface INeighbors {
-    top: [number, number] | null;
-    botttom: [number, number] | null;
-    left: [number, number] | null;
-    right: [number, number] | null;
+export interface INeighbors {
+    _top: string | null;
+    _bottom: string | null;
+    _left: string | null;
+    _right: string | null;
 }
 
 export default class Node {
@@ -25,8 +25,8 @@ export default class Node {
         this.yCoordinate = nodeId[1]
         this.nodeState = NodeState.nodeStateEmpty
         this.neighbors = {
-            top: null, botttom: null, 
-            left: null, right: null
+            _top: null, _bottom: null, 
+            _left: null, _right: null
         }
         this.xLimit = xlimit
         this.yLimit = ylimit
@@ -36,16 +36,16 @@ export default class Node {
 
     getNeighborNodes(){
         if (this.yCoordinate + 1 < this.yLimit) { 
-            this.neighbors.botttom = [this.xCoordinate, this.yCoordinate + 1]
+            this.neighbors._bottom = JSON.stringify([this.xCoordinate, this.yCoordinate + 1])
         }
         if (this.yCoordinate > 0) {
-            this.neighbors.top = [this.xCoordinate, this.yCoordinate - 1]
+            this.neighbors._top = JSON.stringify([this.xCoordinate, this.yCoordinate - 1])
         }
         if (this.xCoordinate + 1 < this.xLimit) {
-            this.neighbors.right = [this.xCoordinate + 1, this.yCoordinate ]
+            this.neighbors._right = JSON.stringify([this.xCoordinate + 1, this.yCoordinate ])
         }
         if (this.xCoordinate > 0) {
-            this.neighbors.left = [this.xCoordinate - 1, this.yCoordinate]
+            this.neighbors._left = JSON.stringify([this.xCoordinate - 1, this.yCoordinate])
         }
     }
 

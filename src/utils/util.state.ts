@@ -118,7 +118,6 @@ export default class State{
 
         for(let btn of this.toasterBtnToggles){
             document.getElementById(btn.elementId)!.addEventListener("click", () => {
-                    console.log(btn)
                 switch(btn.elementId){
                     case HTMLIds.navReset:
                         this.setReset();
@@ -184,8 +183,6 @@ export default class State{
                     foundNode.setNodeAsBarrier()
                     break;
             }
-
-            console.log(this.recentEventBtnTriggered, foundNode)
         })
     }
 

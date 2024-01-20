@@ -1,3 +1,4 @@
+import { HTMLIds } from "./util.constants";
 import Node from "./element.node";
 
 export default class Maze{
@@ -5,7 +6,7 @@ export default class Maze{
     mazeSize: number;
 
     constructor(mazeSize: number = 777) {
-        this.mazeId = "maze";
+        this.mazeId = HTMLIds.maze;
         this.mazeSize = mazeSize;
     }
 

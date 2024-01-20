@@ -1,42 +1,14 @@
-declare var bootstrap: any;
-
-interface IToaster{
-    message: string,
-    elementId: string
-}
+import { HTMLIds } from "./util.constants";
 
 export default class Toaster{
     toasterId: string;
     toasterBodyId: string;
-    toasterBtnToggles: IToaster[];
     toasterBodyTextId: string;
 
     constructor() {
-        this.toasterId = "toaster";
-        this.toasterBodyId = "liveToast";
-        this.toasterBtnToggles = [
-            {message: "Grid Reset Successfully!", elementId: "resetBtn" },
-            {message: "Visualizing Algorithm...", elementId: "visualizeBtn" },
-
-            {message: "Start Node Picked!", elementId: "startNodeBtn" },
-            {message: "End Node Picked!", elementId: "endNodeBtn" },
-            {message: "Wall Node Picked!", elementId: "wallNodeBtn" },
-
-        ];
-        this.toasterBodyTextId = "toastBody"
-    }
-
-    enableToasterJS(){
-        const toastLiveExample = document.getElementById(this.toasterBodyId)
-        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-
-        for(let btn of this.toasterBtnToggles){
-            document.getElementById(btn.elementId)!.addEventListener("click", () => {
-                toastBootstrap.show()
-                document.getElementById(this.toasterBodyTextId)!.textContent = btn.message
-            })
-        }
-
+        this.toasterId = HTMLIds.toaster;
+        this.toasterBodyId = HTMLIds.toasterBody;
+        this.toasterBodyTextId = HTMLIds.toasterBody
     }
 
     render(){
@@ -54,6 +26,5 @@ export default class Toaster{
         const toaster: HTMLElement | null = document.getElementById(this.toasterId);
         toaster!.innerHTML = toasterContent
         
-        this.enableToasterJS();
     }
 }

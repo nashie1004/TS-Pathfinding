@@ -1,40 +1,42 @@
+import { HTMLIds } from "./util.constants";
+
 interface IAlgorithmsOptions{
     value: number,
     name: string
 }
 interface INavBtnsIds{
-    startNodeBtnId: "startNodeBtn",
-    endNodeBtnId: "endNodeBtn",
-    wallNodeBtnId: "wallNodeBtn",
-    resetBtnId: "resetBtn",
-    visualizeBtnId: "visualizeBtn",
-    moreOptionsBtnId: "moreOptionsBtn"
+    startNodeBtnId: HTMLIds.navStartNode,
+    endNodeBtnId: HTMLIds.navEndNode,
+    wallNodeBtnId: HTMLIds.navWallNode,
+    resetBtnId: HTMLIds.navReset,
+    visualizeBtnId: HTMLIds.navVisualize,
+    moreOptionsBtnId: HTMLIds.navMoreOptions
+    selectBtnId: HTMLIds.navSelect
 }
 
 export default class Nav{
     navId: string;
     algorithms: IAlgorithmsOptions[];
-    moreOptionsId: string;
     modalMainId: string;
     btnIds: INavBtnsIds
 
     constructor() {
-        this.navId = "nav";
+        this.navId = HTMLIds.nav;
         this.algorithms = [
-            { name: "Depth-First Search", value: 1 },
-            { name: "Breadth-First Search", value: 2 },
-            { name: "A*", value: 3 },
-            { name: "Dijkstra", value: 4 },
+            { name: HTMLIds.algorithmDFS, value: 1 },
+            { name: HTMLIds.algorithmBFS, value: 2 },
+            { name: HTMLIds.algorithmAStar, value: 3 },
+            { name: HTMLIds.algorithmDijkstra, value: 4 },
         ]        
-        this.moreOptionsId = "moreOptionsBtn";
-        this.modalMainId = "tsModal";
+        this.modalMainId = HTMLIds.modalMainId;
         this.btnIds = {
-            startNodeBtnId: "startNodeBtn",
-            endNodeBtnId: "endNodeBtn",
-            wallNodeBtnId: "wallNodeBtn",
-            resetBtnId: "resetBtn",
-            visualizeBtnId: "visualizeBtn",
-            moreOptionsBtnId: "moreOptionsBtn"
+            startNodeBtnId: HTMLIds.navStartNode,
+            endNodeBtnId: HTMLIds.navEndNode,
+            wallNodeBtnId: HTMLIds.navWallNode,
+            resetBtnId: HTMLIds.navReset,
+            visualizeBtnId: HTMLIds.navVisualize,
+            moreOptionsBtnId: HTMLIds.navMoreOptions
+            ,selectBtnId: HTMLIds.navSelect
         }
     }
 
@@ -59,7 +61,7 @@ export default class Nav{
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
 
-                <select style="max-width: 200px;" class="form-select me-auto" aria-label="Algorithm Options">
+                <select id="${this.btnIds.selectBtnId}" style="max-width: 200px;" class="form-select me-auto" aria-label="Algorithm Options">
                     ${this.showDropdownAlgorithms()}
                 </select>
                 

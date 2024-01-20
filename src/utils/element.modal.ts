@@ -5,13 +5,15 @@ Col size,
 Random Maze,
  */
 
+import { HTMLIds } from "./util.constants";
+
 export default class Modal{
     modalId: string;
     modalMainId: string;
 
     constructor() {
-      this.modalId = "modal"
-      this.modalMainId = "tsModal";
+      this.modalId = HTMLIds.modal
+      this.modalMainId = HTMLIds.modalMainId;
       this.modalTogglesId = {}
     }
 

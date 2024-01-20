@@ -1,8 +1,26 @@
+import { HTMLIds } from "./util.constants";
+
 export default class Node {
     nodeId: [number, number];
+    evaluated: boolean;
+    xCoordinate: number;
+    yCoordinate: number;
+    nodeState: 
+    HTMLIds.nodeStateEmpty | HTMLIds.nodeStateEnd | 
+    HTMLIds.nodeStateStart | HTMLIds.nodeStateEvaluated | 
+    HTMLIds.nodeStateWall
+    // neighbors: 
 
-    constructor(nodeId: [number, number]) {
+    constructor(nodeId: [number, number] = [0, 0]) {
         this.nodeId = nodeId;
+        this.evaluated = false;
+        this.xCoordinate = nodeId[0]
+        this.yCoordinate = nodeId[1]
+        this.nodeState = HTMLIds.nodeStateEmpty
+    }
+
+    getNeighborNodes(){
+        //
     }
 
     setNodeAsStartNode(){

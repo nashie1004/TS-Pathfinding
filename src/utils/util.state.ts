@@ -1,3 +1,7 @@
+import AStar from "./algo.aStar";
+import BFS from "./algo.bfs";
+import DFS from "./algo.dfs";
+import Djikstra from "./algo.djikstra";
 import Node from "./element.node";
 import { HTMLIds } from "./util.constants";
 
@@ -8,45 +12,79 @@ interface IToaster{
     elementId: string
 }
 
-interface IGraphNode{
-    evaluated: boolean,
-    xCoordinate: number,
-    yCoordinate: number,
-    nodeState: 
-    HTMLIds.nodeStateEmpty | HTMLIds.nodeStateEnd | 
-    HTMLIds.nodeStateStart | HTMLIds.nodeStateEvaluated | 
-    HTMLIds.nodeStateWall
-}
+export type IGraph = Map<[number, number], Node>
 
+interface IExecAlgo{
+    aStar: AStar;
+    bfs: BFS;
+    dfs: DFS;
+    djikstra: Djikstra;
+}
 
 export default class State{
     toasterBtnToggles: IToaster[];
-    algoSelected: HTMLIds.algorithmDFS | HTMLIds.algorithmBFS | HTMLIds.algorithmAStar | HTMLIds.algorithmDijkstra
     gridSize: number
     row: number
     column: number
     nodeSize: number
-    gridGraph: Map<[number, number], IGraphNode>;
+    gridGraph: IGraph;
+    algos: IExecAlgo;
 
     constructor() {
         this.toasterBtnToggles = [
-            {message: "Grid Reset Successfully!", elementId: HTMLIds.navReset.toString() },
-            {message: "Visualizing Algorithm...", elementId: HTMLIds.navVisualize.toString() },
-            {message: "Start Node Picked!", elementId: HTMLIds.navStartNode.toString() },
-            {message: "End Node Picked!", elementId: HTMLIds.navEndNode.toString() },
-            {message: "Wall Node Picked!", elementId: HTMLIds.navWallNode.toString() },
+            {message: "Grid Reset Successfully!", elementId: HTMLIds.navReset },
+            {message: "Visualizing Algorithm...", elementId: HTMLIds.navVisualize },
+            {message: "Start Node Picked!", elementId: HTMLIds.navStartNode },
+            {message: "End Node Picked!", elementId: HTMLIds.navEndNode },
+            {message: "Wall Node Picked!", elementId: HTMLIds.navWallNode },
         ];
-        this.algoSelected = HTMLIds.algorithmDFS
         this.column = 45;
         this.row = 18;
         this.nodeSize = 30; //px
         this.gridSize = this.row * this.column
         this.gridGraph = new Map();
+        this.algos = {
+            aStar: new AStar(this.gridGraph),
+            djikstra: new Djikstra(this.gridGraph),
+            bfs: new BFS(this.gridGraph),
+            dfs: new DFS(this.gridGraph)
+        }
     }
 
     getAlgoSelected(){
-        const select: HTMLElement | null = document.getElementById(HTMLIds.navSelect);
-        console.log(select)
+        const select: HTMLSelectElement | null = document.getElementById(HTMLIds.navSelect) as HTMLSelectElement;
+        return select;
+    }
+
+    setExecuteAlgo(){
+        const select = this.getAlgoSelected();
+        
+        if (select){
+            console.log(select, select.value)
+            
+            switch(select.value){
+                case HTMLIds.algorithmAStar:
+                    this.algos.aStar.run();
+
+                    break;
+                case HTMLIds.algorithmBFS:
+                    this.algos.bfs.run();
+
+                    break;
+                case HTMLIds.algorithmDFS:
+                    this.algos.dfs.run();
+
+                    break;
+                case HTMLIds.algorithmDijkstra:
+                    this.algos.djikstra.run();
+
+                    break;
+            }
+        }
+    }
+
+    setReset(){
+
     }
 
     setToasterClickEvents(){
@@ -57,6 +95,23 @@ export default class State{
             document.getElementById(btn.elementId)!.addEventListener("click", () => {
                 toastBootstrap.show()
                 document.getElementById(HTMLIds.toasterBodyText)!.textContent = btn.message
+
+                // TODO
+                switch(btn.elementId){
+                    case HTMLIds.navReset:
+                        this.setReset();
+                        break;
+                    case HTMLIds.navVisualize:
+                        this.setExecuteAlgo();
+                        break;
+                    case HTMLIds.navStartNode:
+                        break;
+                    case HTMLIds.navEndNode:
+                        break;
+                    case HTMLIds.navWallNode:
+                        break;
+                }
+
             })
         }
     }
@@ -80,13 +135,9 @@ export default class State{
                 const idx: [number, number] = [rowI, colJ];
                 const htmlNode = new Node(idx);
 
-                this.gridGraph.set(idx, { 
-                    evaluated: false,
-                    xCoordinate: rowI,
-                    yCoordinate: colJ,
-                    nodeState: HTMLIds.nodeStateEmpty
-                })
-                
+                htmlNode.getNeighborNodes();
+                this.gridGraph.set(idx, htmlNode)
+
                 htmlNodes += htmlNode.render();
             }
         }
@@ -95,11 +146,12 @@ export default class State{
         mazeEntry!.innerHTML = htmlNodes
 
         console.log(this.gridGraph)
+
+        this.setListenGridMovement();
     }
 
     init(){
         this.setToasterClickEvents();
-        this.getAlgoSelected()
         this.setInitialNodes()
     }
 }

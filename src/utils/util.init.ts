@@ -24,10 +24,10 @@ export default class Init{
 
     initialize(){
         this.nav.render();
-        this.maze.render();
         this.progress.render();
         this.toaster.render()
         this.modal.render();
+        this.maze.render();
 
         this._globalState.init();
     }

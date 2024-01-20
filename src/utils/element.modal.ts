@@ -8,13 +8,8 @@ Random Maze,
 import { HTMLIds } from "./util.constants";
 
 export default class Modal{
-    modalId: string;
-    modalMainId: string;
 
     constructor() {
-      this.modalId = HTMLIds.modal
-      this.modalMainId = HTMLIds.modalMainId;
-      this.modalTogglesId = {}
     }
 
     renderModalButton(){
@@ -25,11 +20,11 @@ export default class Modal{
         const modalContent = `
       
       <!-- Modal -->
-      <div class="modal fade " id="${this.modalMainId}" tabindex="-1" aria-labelledby="${this.modalMainId}Label" aria-hidden="true">
+      <div class="modal fade " id="${HTMLIds.modalMainId}" tabindex="-1" aria-labelledby="${HTMLIds.modalMainId}Label" aria-hidden="true">
         <div class="modal-dialog ">
           <div class="modal-content">
             <div class="modal-header " >
-              <h1 class="modal-title fs-5" id="${this.modalMainId}Label">More options</h1>
+              <h1 class="modal-title fs-5" id="${HTMLIds.modalMainId}Label">More options</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -75,7 +70,7 @@ export default class Modal{
         </div>
       </div>`;
 
-        const modal: HTMLElement | null = document.getElementById(this.modalId);
+        const modal: HTMLElement | null = document.getElementById(HTMLIds.modal);
         
         modal!.innerHTML = modalContent
     }

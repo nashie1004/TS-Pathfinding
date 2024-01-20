@@ -19,9 +19,16 @@ export enum HTMLIds{
     ,modalMainId = "tsModal"
 
     ,maze = "maze"
+    ,mazeEntry = "mazeEntry"
 
     ,algorithmDFS = "Depth-First Search"
     ,algorithmBFS = "Breadth-First Search"
     ,algorithmAStar = "A-Star"
     ,algorithmDijkstra = "Dijkstra"
+
+    ,nodeStateEvaluated = "evaluated"
+    ,nodeStateWall = "wall"
+    ,nodeStateStart = "start"
+    ,nodeStateEnd = "end"
+    ,nodeStateEmpty = "empty"
 }

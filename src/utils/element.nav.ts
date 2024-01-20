@@ -1,43 +1,21 @@
 import { HTMLIds } from "./util.constants";
 
 interface IAlgorithmsOptions{
-    value: number,
+    value: string,
     name: string
-}
-interface INavBtnsIds{
-    startNodeBtnId: HTMLIds.navStartNode,
-    endNodeBtnId: HTMLIds.navEndNode,
-    wallNodeBtnId: HTMLIds.navWallNode,
-    resetBtnId: HTMLIds.navReset,
-    visualizeBtnId: HTMLIds.navVisualize,
-    moreOptionsBtnId: HTMLIds.navMoreOptions
-    selectBtnId: HTMLIds.navSelect
 }
 
 export default class Nav{
-    navId: string;
     algorithms: IAlgorithmsOptions[];
-    modalMainId: string;
-    btnIds: INavBtnsIds
 
     constructor() {
-        this.navId = HTMLIds.nav;
         this.algorithms = [
-            { name: HTMLIds.algorithmDFS, value: 1 },
-            { name: HTMLIds.algorithmBFS, value: 2 },
-            { name: HTMLIds.algorithmAStar, value: 3 },
-            { name: HTMLIds.algorithmDijkstra, value: 4 },
+            { name: HTMLIds.algorithmDFS, value: HTMLIds.algorithmDFS },
+            { name: HTMLIds.algorithmBFS, value: HTMLIds.algorithmBFS },
+            { name: HTMLIds.algorithmAStar, value: HTMLIds.algorithmAStar },
+            { name: HTMLIds.algorithmDijkstra, value: HTMLIds.algorithmDijkstra },
         ]        
-        this.modalMainId = HTMLIds.modalMainId;
-        this.btnIds = {
-            startNodeBtnId: HTMLIds.navStartNode,
-            endNodeBtnId: HTMLIds.navEndNode,
-            wallNodeBtnId: HTMLIds.navWallNode,
-            resetBtnId: HTMLIds.navReset,
-            visualizeBtnId: HTMLIds.navVisualize,
-            moreOptionsBtnId: HTMLIds.navMoreOptions
-            ,selectBtnId: HTMLIds.navSelect
-        }
+        
     }
 
     showDropdownAlgorithms(): string{
@@ -61,31 +39,31 @@ export default class Nav{
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
 
-                <select id="${this.btnIds.selectBtnId}" style="max-width: 200px;" class="form-select me-auto" aria-label="Algorithm Options">
+                <select id="${HTMLIds.navSelect}" style="max-width: 200px;" class="form-select me-auto" aria-label="Algorithm Options">
                     ${this.showDropdownAlgorithms()}
                 </select>
                 
                 <div class="">
 
                     <div class="btn-group me-2" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="btnradio" id="${this.btnIds.startNodeBtnId}" autocomplete="off" checked>
-                        <label class="btn btn-success" for="${this.btnIds.startNodeBtnId}">Start Node</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="${HTMLIds.navStartNode}" autocomplete="off" checked>
+                        <label class="btn btn-success" for="${HTMLIds.navStartNode}">Start Node</label>
 
-                        <input type="radio" class="btn-check" name="btnradio" id="${this.btnIds.endNodeBtnId}" autocomplete="off">
-                        <label class="btn btn-success" for="${this.btnIds.endNodeBtnId}">End Node</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="${HTMLIds.navEndNode}" autocomplete="off">
+                        <label class="btn btn-success" for="${HTMLIds.navEndNode}">End Node</label>
 
-                        <input type="radio" class="btn-check" name="btnradio" id="${this.btnIds.wallNodeBtnId}" autocomplete="off">
-                        <label class="btn btn-success" for="${this.btnIds.wallNodeBtnId}">Wall Node</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="${HTMLIds.navWallNode}" autocomplete="off">
+                        <label class="btn btn-success" for="${HTMLIds.navWallNode}">Wall Node</label>
                     </div>
 
                     <div class="btn-group me-2" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="btnradio" id="${this.btnIds.resetBtnId}" autocomplete="off">
-                        <label class="btn btn-light" for="${this.btnIds.resetBtnId}">Reset</label>
-                        <input type="radio" class="btn-check" name="btnradio" id="${this.btnIds.visualizeBtnId}" autocomplete="off">
-                        <label class="btn btn-light" for="${this.btnIds.visualizeBtnId}">Visualize</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="${HTMLIds.navReset}" autocomplete="off">
+                        <label class="btn btn-light" for="${HTMLIds.navReset}">Reset</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="${HTMLIds.navVisualize}" autocomplete="off">
+                        <label class="btn btn-light" for="${HTMLIds.navVisualize}">Visualize</label>
                     </div>
 
-                    <button id="${this.btnIds.moreOptionsBtnId}" data-bs-toggle="modal" data-bs-target="#${this.modalMainId}"
+                    <button id="${HTMLIds.navMoreOptions}" data-bs-toggle="modal" data-bs-target="#${HTMLIds.modalMainId}"
                     type="button" class="btn btn-secondary me-1">More options</button>
                 </div>
                 </div>
@@ -93,7 +71,7 @@ export default class Nav{
             </div>
         </div>`
 
-        const nav: HTMLElement | null = document.getElementById(this.navId);
+        const nav: HTMLElement | null = document.getElementById(HTMLIds.nav);
         nav?.setAttribute('data-bs-theme', 'dark');
         nav?.classList.add("navbar", "navbar-expand-lg", "bg-body-tertiary", "bg-dark")
         nav!.innerHTML = navContent

@@ -1,8 +1,8 @@
 export default class Node {
-    nodeIndex: number;
+    nodeId: [number, number];
 
-    constructor(nodeIndex: number = 0) {
-        this.nodeIndex = nodeIndex;
+    constructor(nodeId: [number, number]) {
+        this.nodeId = nodeId;
     }
 
     setNodeAsStartNode(){
@@ -15,23 +15,23 @@ export default class Node {
 
     setNodeAsBarrier(){
         //bg-dark
-        const node: HTMLElement | null = document.querySelector(`[data-nodeIndex="${this.nodeIndex}"]`)
+        const node: HTMLElement | null = document.querySelector(`[data-nodeId="${this.nodeId}"]`)
         node!.classList.add("bg-dark");
     }
 
     setNodeAsEvaluated(){
         //.bg-primary-subtle
-        const node: HTMLElement | null = document.querySelector(`[data-nodeIndex="${this.nodeIndex}"]`)
+        const node: HTMLElement | null = document.querySelector(`[data-nodeId="${this.nodeId}"]`)
         node!.classList.add("bg-primary-subtle");
     }
 
     setNodeAsPath(){
         //.bg-warning
-        const node: HTMLElement | null = document.querySelector(`[data-nodeIndex="${this.nodeIndex}"]`)
+        const node: HTMLElement | null = document.querySelector(`[data-nodeId="${this.nodeId}"]`)
         node!.classList.add("bg-warning");
     }
 
     render(): string{
-        return `<div class="col border user-select-none" data-nodeIndex='${this.nodeIndex}'>&nbsp;</div>`
+        return `<div class="border user-select-none" data-nodeId='${this.nodeId}'>&nbsp;</div>`
     }
 }

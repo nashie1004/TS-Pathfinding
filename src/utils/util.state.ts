@@ -18,11 +18,15 @@ interface IGraphNode{
     HTMLIds.nodeStateWall
 }
 
+
 export default class State{
     toasterBtnToggles: IToaster[];
     algoSelected: HTMLIds.algorithmDFS | HTMLIds.algorithmBFS | HTMLIds.algorithmAStar | HTMLIds.algorithmDijkstra
     gridSize: number
-    gridGraph: Map<number, IGraphNode>;
+    row: number
+    column: number
+    nodeSize: number
+    gridGraph: Map<[number, number], IGraphNode>;
 
     constructor() {
         this.toasterBtnToggles = [
@@ -33,7 +37,10 @@ export default class State{
             {message: "Wall Node Picked!", elementId: HTMLIds.navWallNode.toString() },
         ];
         this.algoSelected = HTMLIds.algorithmDFS
-        this.gridSize = 777
+        this.column = 45;
+        this.row = 18;
+        this.nodeSize = 30; //px
+        this.gridSize = this.row * this.column
         this.gridGraph = new Map();
     }
 
@@ -58,20 +65,30 @@ export default class State{
 
     }
 
+    setGridDimension(){
+        document.getElementById(HTMLIds.mazeEntry)!.style.gridTemplateColumns = `repeat(${this.column}, ${this.nodeSize}px)`
+        document.getElementById(HTMLIds.mazeEntry)!.style.gridTemplateRows = `repeat(${this.row},${this.nodeSize}px)`
+    }
+
     setInitialNodes(){
+        this.setGridDimension();
+
         let htmlNodes = "";
 
-        for(let i = 0; i < this.gridSize; i++){
-            const htmlNode = new Node(i);
+        for(let rowI = 0; rowI < this.row; rowI++){
+            for(let colJ = 0; colJ < this.column; colJ++){
+                const idx: [number, number] = [rowI, colJ];
+                const htmlNode = new Node(idx);
 
-            this.gridGraph.set(i, { 
-                evaluated: false,
-                xCoordinate: 0,
-                yCoordinate: 0,
-                nodeState: HTMLIds.nodeStateEmpty
-            })
-            
-            htmlNodes += htmlNode.render();
+                this.gridGraph.set(idx, { 
+                    evaluated: false,
+                    xCoordinate: rowI,
+                    yCoordinate: colJ,
+                    nodeState: HTMLIds.nodeStateEmpty
+                })
+                
+                htmlNodes += htmlNode.render();
+            }
         }
         
         const mazeEntry: HTMLElement | null = document.getElementById(HTMLIds.mazeEntry);

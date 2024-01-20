@@ -5,6 +5,14 @@ export default class Node {
         this.nodeIndex = nodeIndex;
     }
 
+    setNodeAsStartNode(){
+
+    }
+
+    setNodeAsEndNode(){
+        //
+    }
+
     setNodeAsBarrier(){
         //bg-dark
         const node: HTMLElement | null = document.querySelector(`[data-nodeIndex="${this.nodeIndex}"]`)
@@ -24,6 +32,6 @@ export default class Node {
     }
 
     render(): string{
-        return `<div class="col border " data-nodeIndex='${this.nodeIndex}'>&nbsp;</div>`
+        return `<div class="col border user-select-none" data-nodeIndex='${this.nodeIndex}'>&nbsp;</div>`
     }
 }

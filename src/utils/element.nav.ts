@@ -2,14 +2,21 @@ interface IAlgorithmsOptions{
     value: number,
     name: string
 }
+interface INavBtnsIds{
+    startNodeBtnId: "startNodeBtn",
+    endNodeBtnId: "endNodeBtn",
+    wallNodeBtnId: "wallNodeBtn",
+    resetBtnId: "resetBtn",
+    visualizeBtnId: "visualizeBtn",
+    moreOptionsBtnId: "moreOptionsBtn"
+}
 
 export default class Nav{
     navId: string;
     algorithms: IAlgorithmsOptions[];
     moreOptionsId: string;
-    visualizeBtnId: string;
-    resetBtnId: string;
     modalMainId: string;
+    btnIds: INavBtnsIds
 
     constructor() {
         this.navId = "nav";
@@ -20,15 +27,21 @@ export default class Nav{
             { name: "Dijkstra", value: 4 },
         ]        
         this.moreOptionsId = "moreOptionsBtn";
-        this.visualizeBtnId = "visualizeBtn";
-        this.resetBtnId = "resetBtn";
         this.modalMainId = "tsModal";
+        this.btnIds = {
+            startNodeBtnId: "startNodeBtn",
+            endNodeBtnId: "endNodeBtn",
+            wallNodeBtnId: "wallNodeBtn",
+            resetBtnId: "resetBtn",
+            visualizeBtnId: "visualizeBtn",
+            moreOptionsBtnId: "moreOptionsBtn"
+        }
     }
 
     showDropdownAlgorithms(): string{
         let dropdownOptions = "";
 
-        for(let item of this.algorithms){
+        for(const item of this.algorithms){
             const li = `<option value="${item.value}" class="">
             ${item.name}</option>`
             dropdownOptions += li;
@@ -53,23 +66,26 @@ export default class Nav{
                 <div class="">
 
                     <div class="btn-group me-2" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                        <label class="btn btn-success" for="btnradio1">Start Node</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="${this.btnIds.startNodeBtnId}" autocomplete="off" checked>
+                        <label class="btn btn-success" for="${this.btnIds.startNodeBtnId}">Start Node</label>
 
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                        <label class="btn btn-success" for="btnradio2">End Node</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="${this.btnIds.endNodeBtnId}" autocomplete="off">
+                        <label class="btn btn-success" for="${this.btnIds.endNodeBtnId}">End Node</label>
 
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                        <label class="btn btn-success" for="btnradio3">Wall Node</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="${this.btnIds.wallNodeBtnId}" autocomplete="off">
+                        <label class="btn btn-success" for="${this.btnIds.wallNodeBtnId}">Wall Node</label>
                     </div>
 
+                    <div class="btn-group me-2" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="btnradio" id="${this.btnIds.resetBtnId}" autocomplete="off">
+                        <label class="btn btn-light" for="${this.btnIds.resetBtnId}">Reset</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="${this.btnIds.visualizeBtnId}" autocomplete="off">
+                        <label class="btn btn-light" for="${this.btnIds.visualizeBtnId}">Visualize</label>
+                    </div>
 
-                    <button id="${this.moreOptionsId}" data-bs-toggle="modal" data-bs-target="#${this.modalMainId}"
+                    <button id="${this.btnIds.moreOptionsBtnId}" data-bs-toggle="modal" data-bs-target="#${this.modalMainId}"
                     type="button" class="btn btn-secondary me-1">More options</button>
-                    <button id="${this.resetBtnId}" type="button" class="btn btn-info me-1 text-liht">Reset Grid</button>
-                    <button id="${this.visualizeBtnId}" type="button" class="btn btn-light">Visualize Algorithm</button>
                 </div>
-
                 </div>
 
             </div>

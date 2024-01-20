@@ -12,6 +12,7 @@ export default class Modal{
     constructor() {
       this.modalId = "modal"
       this.modalMainId = "tsModal";
+      this.modalTogglesId = {}
     }
 
     renderModalButton(){
@@ -49,15 +50,19 @@ export default class Modal{
                 <legend>Maze</legend>
               </fieldset>
 
-              <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btncheck1">Checkbox 1</label>
+              <div class="btn-group me-2 d-flex" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" checked>
+                <label class="btn btn-outline-dark" for="btnradio4">Start Node</label>
 
-                <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btncheck2">Checkbox 2</label>
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+                <label class="btn btn-outline-dark" for="btnradio5">End Node</label>
 
-                <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btncheck3">Checkbox 3</label>
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off">
+                <label class="btn btn-outline-dark" for="btnradio6">Random</label>
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio7" autocomplete="off">
+                <label class="btn btn-outline-dark" for="btnradio7">Random</label>
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio8" autocomplete="off">
+                <label class="btn btn-outline-dark" for="btnradio8">Blank</label>
               </div>
 
             </div>

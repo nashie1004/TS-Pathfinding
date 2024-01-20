@@ -15,8 +15,13 @@ export default class Toaster{
         this.toasterId = "toaster";
         this.toasterBodyId = "liveToast";
         this.toasterBtnToggles = [
-            {message: "Grid reset successfully!", elementId: "resetBtn" },
-            {message: "Visualizing algorithm...", elementId: "visualizeBtn" },
+            {message: "Grid Reset Successfully!", elementId: "resetBtn" },
+            {message: "Visualizing Algorithm...", elementId: "visualizeBtn" },
+
+            {message: "Start Node Picked!", elementId: "startNodeBtn" },
+            {message: "End Node Picked!", elementId: "endNodeBtn" },
+            {message: "Wall Node Picked!", elementId: "wallNodeBtn" },
+
         ];
         this.toasterBodyTextId = "toastBody"
     }
@@ -37,7 +42,7 @@ export default class Toaster{
     render(){
         const toasterContent = `
         <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
-          <div id="liveToast" class="toast text-bg-secondary" role="alert" aria-live="assertive" aria-atomic="true">
+          <div id="liveToast" class="toast text-bg-dark" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body" id="${this.toasterBodyTextId}">
                     <!-- Content here -->

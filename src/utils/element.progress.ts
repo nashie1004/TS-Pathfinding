@@ -9,9 +9,10 @@ export default class Progress{
         const progressBar: HTMLElement | null = document.querySelector(".progress-bar");
         
         let i: number = 0;
-        setInterval(() => {
+        const id = setInterval(() => {
             if (i >= 100){
                 i = 0;
+                //clearInterval(id)
             }
             else
             {

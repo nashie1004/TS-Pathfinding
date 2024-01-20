@@ -23,7 +23,6 @@ export default class Init{
         this.nav.render();
         this.maze.render();
         this.progress.render();
-        
         this.toaster.render()
         this.modal.render();
     }

@@ -9,6 +9,7 @@ interface INeighbors {
 
 export default class Node {
     nodeId: [number, number];
+    _nodeIdString: string
     evaluated: boolean;
     xCoordinate: number;
     yCoordinate: number;
@@ -22,7 +23,8 @@ export default class Node {
 
     // [0: x/horizontal, 1: y/vertical]
     constructor(nodeId: [number, number] = [0, 0], ylimit: number, xlimit: number) {
-        this.nodeId = nodeId;
+        this.nodeId = nodeId; // results to undefined on map.get(nodeId) --pass by reference
+        this._nodeIdString = JSON.stringify(this.nodeId);
         this.evaluated = false;
         this.xCoordinate = nodeId[0] // row/col are swap?
         this.yCoordinate = nodeId[1]
@@ -38,23 +40,22 @@ export default class Node {
     }
 
     getNeighborNodes(){
-        if (this.yLimit <= this.yCoordinate){
+        if (this.yCoordinate + 1 < this.yLimit) { 
             this.neighbors.botttom = [this.xCoordinate, this.yCoordinate + 1]
         }
-        if (this.yCoordinate > 0){
+        if (this.yCoordinate > 0) {
             this.neighbors.top = [this.xCoordinate, this.yCoordinate - 1]
         }
-        if (this.xLimit <= this.xCoordinate){
+        if (this.xCoordinate + 1 < this.xLimit) {
             this.neighbors.right = [this.xCoordinate + 1, this.yCoordinate ]
         }
-        if (this.xCoordinate > 0){
+        if (this.xCoordinate > 0) {
             this.neighbors.left = [this.xCoordinate - 1, this.yCoordinate]
         }
-        console.log(this)
     }
 
     setNodeAsStartNode(){
-
+        
     }
 
     setNodeAsEndNode(){
@@ -79,7 +80,9 @@ export default class Node {
         node!.classList.add("bg-warning");
     }
 
-    render(): string{
-        return `<div class="border user-select-none" data-nodeId='${this.nodeId}'>&nbsp;</div>`
+    render(): string{ 
+        return `<div class="border user-select-none" data-nodeId='${this.nodeId}'>
+        &nbsp;
+        </div>`
     }
 }

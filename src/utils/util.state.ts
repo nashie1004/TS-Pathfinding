@@ -12,7 +12,7 @@ interface IToaster{
     elementId: string
 }
 
-export type IGraph = Map<[number, number], Node>
+export type IGraph = Map<string, Node>
 
 interface IExecAlgo{
     aStar: AStar;
@@ -23,9 +23,8 @@ interface IExecAlgo{
 
 export default class State{
     toasterBtnToggles: IToaster[];
-    gridSize: number
-    row: number
-    column: number
+    row: number // row = y, 
+    column: number //column = x
     nodeSize: number
     gridGraph: IGraph;
     algos: IExecAlgo;
@@ -41,7 +40,6 @@ export default class State{
         this.column = 45;
         this.row = 18;
         this.nodeSize = 30; //px
-        this.gridSize = this.row * this.column
         this.gridGraph = new Map();
         this.algos = {
             aStar: new AStar(this.gridGraph),
@@ -116,8 +114,21 @@ export default class State{
         }
     }
 
-    setListenGridMovement(){
+    setListenGridContainerClickEvent(){
+        document.getElementById(HTMLIds.maze)!.addEventListener("click", (e: MouseEvent) => {
+            const cell: HTMLElement | null = e.target as HTMLElement
+            
+            if (cell?.dataset?.nodeid){
+                const nodeId = cell.dataset.nodeid.split(",").map(Number) as [number, number];
+                const _nodeIdString = JSON.stringify(nodeId);
 
+                const foundNode: Node | undefined = this.gridGraph.get(_nodeIdString);
+
+                foundNode?.setNodeAsPath()
+
+                console.log(foundNode)
+            }
+        })
     }
 
     setGridDimension(){
@@ -130,12 +141,12 @@ export default class State{
 
         let htmlNodes = "";
 
-        for(let row = 0; row < this.row; row++){
-            for(let col = 0; col < this.column; col++){
-                const idx: [number, number] = [col, row]; // Inverse = [0: x/horizontal, 1: y/vertical]
+        for(let y = 0; y < this.row; y++){
+            for(let x = 0; x < this.column; x++){
+                const idx: [number, number] = [x, y]; // Inverse = [0: x/horizontal, 1: y/vertical]
                 const htmlNode = new Node(idx, this.row, this.column);
 
-                this.gridGraph.set(idx, htmlNode)
+                this.gridGraph.set(htmlNode._nodeIdString, htmlNode)
 
                 htmlNodes += htmlNode.render();
             }
@@ -146,7 +157,7 @@ export default class State{
 
         console.log(this.gridGraph)
 
-        this.setListenGridMovement();
+        this.setListenGridContainerClickEvent();
     }
 
     init(){
